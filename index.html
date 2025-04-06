@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contatore QR</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #fffbea;
+    }
+    .alert {
+      background-color: #ffcc00;
+      padding: 20px;
+      font-size: 1.5em;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .counter {
+      font-size: 2em;
+      color: #333;
+    }
+  </style>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div class="alert">
+    ⚠️ Attenzione! Questa poteva essere una truffa!
+  </div>
+  <div class="counter">
+    Visite: <span id="visite">Caricamento...</span>
+  </div>
+
+  <script>
+    // Configurazione Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyC7rIAfYHTLdhJRuIHUgfEKo0RXMcUwRtA",
+      authDomain: "qr-counter-85e36.firebaseapp.com",
+      databaseURL: "https://qr-counter-85e36-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "qr-counter-85e36",
+      storageBucket: "qr-counter-85e36.firebasestorage.app",
+      messagingSenderId: "1007770574869",
+      appId: "1:1007770574869:web:4dfcb79eb5816666e7ee1c"
+    };
+
+    // Inizializza Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const counterRef = db.ref('visite');
+
+    // Incrementa il contatore
+    counterRef.transaction(current => {
+      return (current || 0) + 1;
+    });
+
+    // Mostra il valore aggiornato
+    counterRef.on('value', snapshot => {
+      document.getElementById('visite').textContent = snapshot.val();
+    });
+  </script>
+</body>
+</html>
